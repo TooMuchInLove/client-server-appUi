@@ -33,14 +33,13 @@ class ChatUI(object):
         # Высота приложения (минимальная и максимальная)
         self.__HEIGHT_MIN = _hmin
         self.__HEIGHT_MAX = _hmax
-        # Определяем параметры виджета
+        # Определяем параметры виджета и заголовки компонентов
         self.setupUi()
         self.retranslateUi()
 
     def setupUi(self):
         # Координаты и размеры главной панели
-        TP_X = 10
-        TP_Y = 10
+        TP_X = TP_Y = 10
         TP_WIDTH = 481
         TP_HEIGHT = 351
         # Название приложения
@@ -70,23 +69,23 @@ class ChatUI(object):
         self.__LayoutFormChat = QVBoxLayout(self.__TChatWidgets)
         self.__LayoutFormChat.setObjectName('__LayoutFormChat')
         # Текстовое поле с информацией (СООБЩЕНИЯ ЧАТА)
-        self.__TEInfoChat = QPlainTextEdit(self.__TChatWidgets)
-        self.__TEInfoChat.setObjectName('__TEInfoChat')
+        self.TEInfoChat = QPlainTextEdit(self.__TChatWidgets)
+        self.TEInfoChat.setObjectName('TEInfoChat')
         # Текстовое поле с вводом сообщения
-        self.__LETextMessage = QLineEdit(self.__TChatWidgets)
-        self.__LETextMessage.setObjectName('LETextMessage')
+        self.LETextMessage = QLineEdit(self.__TChatWidgets)
+        self.LETextMessage.setObjectName('LETextMessage')
         # Слой с компонентами панели "ЧАТ"
         self.__LayoutFormBtn = QHBoxLayout()
         self.__LayoutFormBtn.setObjectName('__LayoutFormBtn')
         # КНОПКА отправки сообщений
-        self.__PBSendMessage = QPushButton(self.__TChatWidgets)
-        self.__PBSendMessage.setObjectName('__PBSendMessage')
+        self.PBSendMessage = QPushButton(self.__TChatWidgets)
+        self.PBSendMessage.setObjectName('PBSendMessage')
         # КНОПКА подключения
-        self.__PBConnect = QPushButton(self.__TChatWidgets)
-        self.__PBConnect.setObjectName('__PBConnect')
+        self.PBConnect = QPushButton(self.__TChatWidgets)
+        self.PBConnect.setObjectName('PBConnect')
         # КНОПКА очистки поля ввода сообщений
-        self.__PBClearMessage = QPushButton(self.__TChatWidgets)
-        self.__PBClearMessage.setObjectName('__PBClearMessage')
+        self.PBClearMessage = QPushButton(self.__TChatWidgets)
+        self.PBClearMessage.setObjectName('PBClearMessage')
 
         # Панель с НАСТРОЙКАМИ
         self.__TSettings = QWidget()
@@ -100,30 +99,34 @@ class ChatUI(object):
         self.__LayoutFormSettings = QVBoxLayout(self.__TSettingsWidgets)
         self.__LayoutFormSettings.setObjectName('__LayoutFormSettings')
         # Текстовое поле с вводом адреса сервера
-        self.__LEAddressServer = QLineEdit(self.__TSettingsWidgets)
-        self.__LEAddressServer.setObjectName('__LEAddressServer')
+        self.LEAddressServer = QLineEdit(self.__TSettingsWidgets)
+        self.LEAddressServer.setObjectName('LEAddressServer')
         # Текстовое поле с вводом порта сервера
-        self.__LEPortServer = QLineEdit(self.__TSettingsWidgets)
-        self.__LEPortServer.setObjectName('__LEPortServer')
+        self.LEPortServer = QLineEdit(self.__TSettingsWidgets)
+        self.LEPortServer.setObjectName('LEPortServer')
+        # Текстовое поле с вводом порта сервера
+        self.LEUserName = QLineEdit(self.__TSettingsWidgets)
+        self.LEUserName.setObjectName('LEUserName')
         # КНОПКА получения данных для подключения
-        self.__PBDataForConnection = QPushButton(self.__TSettingsWidgets)
-        self.__PBDataForConnection.setObjectName('__PBDataForConnection')
+        self.PBDataForConnection = QPushButton(self.__TSettingsWidgets)
+        self.PBDataForConnection.setObjectName('PBDataForConnection')
         # Текстовое поле с информацией (ДАННЫЕ ПО ПОДКЛЮЧЕНИЮ)
-        self.__TEInfoSettings = QPlainTextEdit(self.__TSettingsWidgets)
-        self.__TEInfoSettings.setObjectName('__TEInfoSettings')
+        self.TEInfoSettings = QPlainTextEdit(self.__TSettingsWidgets)
+        self.TEInfoSettings.setObjectName('TEInfoSettings')
 
         # УПАКОВКА компонентов на слой __LayoutFormChat
-        self.__LayoutFormChat.addWidget(self.__TEInfoChat)
-        self.__LayoutFormChat.addWidget(self.__LETextMessage)
-        self.__LayoutFormBtn.addWidget(self.__PBSendMessage)
-        self.__LayoutFormBtn.addWidget(self.__PBConnect)
+        self.__LayoutFormChat.addWidget(self.TEInfoChat)
+        self.__LayoutFormChat.addWidget(self.LETextMessage)
+        self.__LayoutFormBtn.addWidget(self.PBSendMessage)
+        self.__LayoutFormBtn.addWidget(self.PBConnect)
         self.__LayoutFormChat.addLayout(self.__LayoutFormBtn)
-        self.__LayoutFormChat.addWidget(self.__PBClearMessage)
+        self.__LayoutFormChat.addWidget(self.PBClearMessage)
         # УПАКОВКА компонентов на слой __LayoutFormSettings
-        self.__LayoutFormSettings.addWidget(self.__LEAddressServer)
-        self.__LayoutFormSettings.addWidget(self.__LEPortServer)
-        self.__LayoutFormSettings.addWidget(self.__PBDataForConnection)
-        self.__LayoutFormSettings.addWidget(self.__TEInfoSettings)
+        self.__LayoutFormSettings.addWidget(self.LEAddressServer)
+        self.__LayoutFormSettings.addWidget(self.LEPortServer)
+        self.__LayoutFormSettings.addWidget(self.LEUserName)
+        self.__LayoutFormSettings.addWidget(self.PBDataForConnection)
+        self.__LayoutFormSettings.addWidget(self.TEInfoSettings)
         # Видимость панели с ЧАТОМ и НАСТРОЙКАМИ (По умолчанию панель с НАСТРОЙКАМИ)
         self.__tabPanel.addTab(self.__TChat, '')
         self.__tabPanel.addTab(self.__TSettings, '')
@@ -137,13 +140,14 @@ class ChatUI(object):
         # Название приложения
         self.widget.setWindowTitle(caption('widget', 'Chat client-server'))
         # Названия некоторых объектов
-        self.__LETextMessage.setPlaceholderText(caption('widget', 'Текст сообщения...'))
-        self.__LEAddressServer.setPlaceholderText(caption('widget', 'Адрес сервера...'))
-        self.__LEPortServer.setPlaceholderText(caption('widget', 'Порт сервера...'))
-        self.__PBSendMessage.setText(caption('widget', 'Отправить'))
-        self.__PBConnect.setText(caption('widget', 'Подключиться'))
-        self.__PBClearMessage.setText(caption('widget', 'Очистить'))
-        self.__PBDataForConnection.setText(caption('widget', 'Данные для подключения'))
+        self.LETextMessage.setPlaceholderText(caption('widget', 'Текст сообщения...'))
+        self.LEAddressServer.setPlaceholderText(caption('widget', 'Адрес сервера...'))
+        self.LEUserName.setPlaceholderText(caption('widget', 'Временное имя пользователя...'))
+        self.LEPortServer.setPlaceholderText(caption('widget', 'Порт сервера...'))
+        self.PBSendMessage.setText(caption('widget', 'Отправить'))
+        self.PBConnect.setText(caption('widget', 'Подключиться'))
+        self.PBClearMessage.setText(caption('widget', 'Очистить'))
+        self.PBDataForConnection.setText(caption('widget', 'Данные для подключения'))
         self.__tabPanel.setTabText(
             self.__tabPanel.indexOf(self.__TChat),
             caption('widget', 'Чат')
