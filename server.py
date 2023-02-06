@@ -39,10 +39,29 @@ class Server:
                 # Запуск потока для отслеживания новых сообщений
                 threading.Thread(target=self.message_handler, args=(client,)).start()
                 client.send('Успешное подключение!'.encode('utf-8'))
+            # Тайм-аут на 100 млс
             time_sleep(100)
 
-    def message_handler(self):
-        pass
+    def message_handler(self, socket_client):
+        while True:
+            # Принимаем данные от клиента (пакет не больше 1024Байт)
+            message = socket_client.recv(1024)
+
+            # ------------------------- #
+            print(message)
+            # ------------------------- #
+
+            # Если клиент написал 'exit', то удаление тек. сокета
+            if message == 'exit':
+                self.__clients.remove(socket_client)
+                break
+            # Чтобы не отправить сообщение самому себе
+            for client in self.__clients:
+                if client != socket_client:
+                    # Отправляем сообщение каждому клиенту
+                    client.send(message)
+            # Тайм-аут на 100 млс
+            time_sleep(100)
 
 
 Server('127.0.0.1', 4444)
